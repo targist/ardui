@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<title>MagicEmbed HTML UI</title>
+
+<head>
+    <script lang="text/javascript">
+        function upload() {
+            var port = document.getElementById("port").value;
+            var setup = document.getElementById("setup").value;
+            var loop = document.getElementById("loop").value;
+            var logs = document.getElementById("logs");
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/upload', true);
+            //Send the proper header information along with the request
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE) {
+                    alert("port:\n" + port + "\n" +
+                        "setup:\n" + setup + "\n" +
+                        "loop:\n" + loop);
+                    logs.value = "Successfully uploaded.\n" + this.responseText;
+                }
+            }
+            logs.value = "Uploading program ..";
+            xhr.send("port=" + port + "&setup=" + setup + "&loop=" + loop);
+        }
+    </script>
+</head>
+
+<body>
+    <img src="targist-logo.png" />
+    <div align="center">
+        <label for="port">Serial port:</label><br>
+        <input type="text" id="port" name="port" value="" size="50">
+        <br><br>
+        <label for="setup">Setup instructions(max=16):</label><br>
+        <textarea id="setup" name="setup" rows="16" cols="50" style="resize: none;"></textarea>
+        <br><br>
+        <label for="loop">Loop instructions(max=16):</label><br>
+        <textarea id="loop" name="loop" rows="16" cols="50" style="resize: none;"></textarea>
+        <br><br>
+        <input type="submit" value="Upload" onclick="upload()">
+        <br><br>
+        <label for="logs">Logs</label><br>
+        <textarea id="logs" name="logs" rows="5" cols="50" style="resize: none;"></textarea>
+        <br><br>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package com.targist.magicembed.proto;
+
+import "google/protobuf/timestamp.proto";
+import "common.proto";
+
+
+
+message ProjectMetadata{
+  string name = 1;
+  string id = 2;
+  google.protobuf.Timestamp createdAt = 3;
+}
+
+message Project {
+  ProjectMetadata metadata = 1;
+  GenericArduinoProgram program = 2;
+}

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="../../../../layout/compose-model-1625522132858.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1625524993000.xml" value="1.0" />
+        <entry key="../../../../layout/compose-model-1625536531319.xml" value="0.6476964769647696" />
+        <entry key="../../../../layout/compose-model-1625541981911.xml" value="0.1" />
+        <entry key="../../../../layout/compose-model-1625543760575.xml" value="0.1" />
+        <entry key="app/src/main/res/drawable/help_outline_black_24dp.xml" value="0.13240740740740742" />
+        <entry key="app/src/main/res/drawable/ic_usb_black_24dp_1_.xml" value="0.20185185185185187" />
+        <entry key="app/src/main/res/drawable/ic_usb_off_black_24dp.xml" value="0.20185185185185187" />
+        <entry key="app/src/main/res/drawable/save_black_24dp.xml" value="0.13240740740740742" />
+        <entry key="app/src/main/res/xml/device_filter.xml" value="0.2210144927536232" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectPlainTextFileTypeManager">
+    <file url="file://$PROJECT_DIR$/app/src/main/java/com/targis/magicembed/di/AppModuleBinding.kt" />
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
