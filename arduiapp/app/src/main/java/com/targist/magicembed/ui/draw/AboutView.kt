@@ -1,5 +1,6 @@
 package com.targist.magicembed.ui.draw
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,6 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+
+import android.net.Uri
+
+import android.content.Intent
+import androidx.core.content.ContextCompat
+
 
 @Composable
 fun AboutView() {
@@ -21,8 +29,16 @@ fun AboutView() {
             .clickable { },
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
-            Text(text = "MagicEmbed is an application that allows to send programs to arduino visa Serial")
-            Text(text = "product of targist.com")
+            Text(text = "ArdUI is an application that allows programming Arduino from a mobile terminal.\n" +
+                    "\n" )
+
+            Text(text = "From targist.com\n", modifier = Modifier.clickable {
+                //TODO add clickable link
+            })
+            Text(text = "Github https://github.com/targist/ardui ", modifier = Modifier.clickable {
+                //TODO add clickable link
+            })
+
 
         }
     }

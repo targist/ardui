@@ -22,14 +22,21 @@ fun HelpView() {
     ) {
         Column(modifier = Modifier.padding(20.dp)) {
             Text(
-                text = """|
-                |Use the Add instruction button for adding instructions to your
-                |Setup and Loop functions.
-                |When done upload it to your Arduino board
-                |Don't forget to specify the Serial port
-                |
-                |Enjoy!
-            """.trimMargin()
+                text = """
+Before starting:
+
+- Get the library Ardui.zip from
+  https://github.com/targist/ardui/blob/main/arduino-library/generated/c/Ardui.zip
+- Upload GenericProgram.ino from
+  https://github.com/targist/ardui/blob/main/arduino-library/sketches/GenericCircuit/GenericCircuit.ino
+  to your Arduino board.
+
+Create a new program by defining the name, setup and loop instructions. once
+done save the program and connect your mobile to an Arduino board via Serial.
+Finally go to the Serial view in the app and upload your program.
+
+Enjoy!
+            """
             )
 
         }
