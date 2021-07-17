@@ -72,7 +72,7 @@ function parseInstructions(text) {
     });
 }
 
-const port = new SerialPort("/dev/cu.usbmodem14201", {
+const port = new SerialPort("<Your Serial port i.e: /dev/cu.usbmodem14200>", {
   baudRate: 9600,
 });
 
@@ -85,11 +85,13 @@ function switchOfLed13Program() {
       .setSetpinmode(
         new common.SetPinMode()
           .setPin(13)
-          .setMode(common.Mode.OUTPUT)),
+          .setMode(common.Mode.OUTPUT),
+      ),
     new common.Instruction().setDigitalwrite(
       new common.DigitalWrite()
         .setPin(13)
-        .setLevel(common.Level.LOW)),
+        .setLevel(common.Level.LOW),
+    ),
   ]);
   return new common.GenericArduinoProgram()
     .setSetup(setup);
@@ -115,9 +117,12 @@ app.post("/upload", function (req, res) {
   console.log("buffer-length=" + buffer.length);
   port.write([buffer.length]);
   port.write(buffer);
-  res.send("Writing " + buffer.length + " bytes to Arduino Serial port " + req.body.port);
+  res.send(
+    "Writing " + buffer.length + " bytes to Arduino Serial port " +
+      req.body.port,
+  );
 });
 
 app.listen(8081, function () {
-  console.log("MagicEmbed listening on port http://0.0.0.0:8081");
+  console.log("ArdUI listening on port http://0.0.0.0:8081");
 });
