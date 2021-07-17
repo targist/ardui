@@ -14,7 +14,7 @@ android {
 
     defaultConfig {
         applicationId "com.targis.magicembed"
-        minSdk 23
+        minSdk 26
         targetSdk 30
         versionCode 1
         versionName "1.0"
@@ -81,7 +81,7 @@ dependencies {
 
 wire {
     sourcePath {
-        srcDir 'proto'
+        srcDir '../../proto'
     }
     kotlin{}
 }
