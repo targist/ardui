@@ -8,6 +8,9 @@ import com.hoho.android.usbserial.util.SerialInputOutputManager
 import com.targist.ardui.proto.Project
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 
@@ -16,22 +19,39 @@ class DisposableUSBClient(
     private val usbManager: UsbManager,
     private val driver: UsbSerialDriver
 ) {
+
+
+    val logChannel = Channel<LogEntry>(40)
     val log = mutableStateListOf<LogEntry>()
 
+
+    init {
+        coroutineScope.launch(Dispatchers.Main) {
+            logChannel.receiveAsFlow()
+                .collect {
+                    log.add(it)
+                }
+
+        }
+    }
 
     private val disposeInstructions: MutableList<() -> Unit> = mutableListOf()
     lateinit var serialInputOutputManager: SerialInputOutputManager
 
     private fun internalRun() {
+
         val openDevice = usbManager.openDevice(driver.device)
         if (openDevice == null) {
-            log.addLogEntry("Can not open device from manager ${driver.device}", LogType.APP_LOG)
+            logChannel.addLogEntry(
+                "Can not open device from manager ${driver.device}",
+                LogType.APP_LOG
+            )
             return
         }
         disposeInstructions.add { openDevice.close() }
         val port = driver.ports[0]
         if (port == null) {
-            log.addLogEntry(
+            logChannel.addLogEntry(
                 "Cannot open port to communicate with device ${driver.device}",
                 LogType.APP_LOG
             )
@@ -40,24 +60,40 @@ class DisposableUSBClient(
         disposeInstructions.add { port.close() }
         port.open(openDevice)
         port.setParameters(9600, 8, UsbSerialPort.STOPBITS_1, UsbSerialPort.PARITY_NONE)
-        log.addLogEntry("Connecting to usb device ${driver.device.deviceName}", LogType.APP_LOG)
+        logChannel.addLogEntry(
+            "Connecting to usb device ${driver.device.deviceName}",
+            LogType.APP_LOG
+        )
 
 
         serialInputOutputManager =
             SerialInputOutputManager(port, object : SerialInputOutputManager.Listener {
+                val buffer = StringBuffer()
                 override fun onNewData(data: ByteArray?) {
-                    runInUiThread {
-                        log.addLogEntry(
-                            "received " + data?.let { String(it) },
-                            LogType.READ)
-                    }
+                    data?.let { String(it) }
+                        ?.forEach {
+                            if(it == '\n'){
+                                logChannel.addLogEntry(
+                                    "received >> $buffer",
+                                    LogType.READ
+                                )
+                                buffer.delete(0, buffer.length);
+                            }
+                            else {
+                                buffer.append(it)
+                            }
+                        }
+
 
                 }
 
                 override fun onRunError(e: Exception?) {
-                    runInUiThread {
-                        log.addLogEntry(">> error  read : ${e?.stackTraceToString()}", LogType.READ)
-                    }
+
+                    logChannel.addLogEntry(
+                        "read error>> : ${e?.stackTraceToString()}",
+                        LogType.READ
+                    )
+
                 }
             }
             )
@@ -81,9 +117,10 @@ class DisposableUSBClient(
 
         try {
             serialInputOutputManager.writeAsync(buffer)
-            log.addLogEntry("write data: " + program.toString(), LogType.WRITE)
+            logChannel.addLogEntry("sent >> $program", LogType.WRITE)
+
         } catch (e: Throwable) {
-            log.addLogEntry(e.stackTraceToString(), LogType.APP_LOG)
+            logChannel.addLogEntry(e.stackTraceToString(), LogType.APP_LOG)
         }
     }
 
@@ -92,7 +129,7 @@ class DisposableUSBClient(
         try {
             internalRun()
         } catch (e: Throwable) {
-            log.addLogEntry("Error while communicating with device $e", LogType.APP_LOG)
+            logChannel.addLogEntry("Error while communicating with device $e", LogType.APP_LOG)
             onDispose()
         }
     }
@@ -103,23 +140,15 @@ class DisposableUSBClient(
             try {
                 it()
             } catch (e: Throwable) {
-                log.addLogEntry("Error while disposing of resources $e", LogType.APP_LOG)
+                logChannel.addLogEntry("Error while disposing of resources $e", LogType.APP_LOG)
             }
         }
 
     }
 
-    fun runInUiThread(block: suspend CoroutineScope.() -> Unit) {
-        coroutineScope.launch(Dispatchers.Main) {
-            this.block()
-        }
-    }
 }
 
 
-
-
-
-fun MutableList<LogEntry>.addLogEntry(text: String, logType: LogType) {
-    this.add(LogEntry(text = text, logType = logType))
+fun Channel<LogEntry>.addLogEntry(text: String, logType: LogType) {
+    this.trySend(LogEntry(text = text, logType = logType))
 }
