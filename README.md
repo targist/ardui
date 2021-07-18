@@ -17,7 +17,7 @@ Serial.
 
 In order to make the setup work you have to do two things
 
-### Build and deploy the generic circuit to your Arduino board.
+### Build and deploy the generic program to your Arduino board
 
 in order to do that
 
@@ -26,7 +26,7 @@ in order to do that
   _(You can include the Library zip can in Arduino IDE via: Sketch -> Include
   Library -> Add .ZIP Library.)_
 - Upload
-  [GenericCircuit.ino](./arduino-library/sketches/GenericCircuit/GenericCircuit.ino)
+  [GenericProgram.ino](./arduino-library/sketches/GenericProgram/GenericProgram.ino)
   to your Arduino board.
 
 That's it!

@@ -28,7 +28,7 @@ Before starting:
 - Get the library Ardui.zip from
   https://github.com/targist/ardui/blob/main/arduino-library/generated/c/Ardui.zip
 - Upload GenericProgram.ino from
-  https://github.com/targist/ardui/blob/main/arduino-library/sketches/GenericCircuit/GenericCircuit.ino
+  https://github.com/targist/ardui/blob/main/arduino-library/sketches/GenericProgram/GenericProgram.ino
   to your Arduino board.
 
 Create a new program by defining the name, setup and loop instructions. once
