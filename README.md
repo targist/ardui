@@ -115,8 +115,8 @@ git clone https://github.com/nanopb/nanopb.git
 ```
 NANOPB=path/to/nanopb
 ${NANOPB}/generator/nanopb_generator.py \
-  -D generated/c \
-  -I app/proto \
+  -D ./arduino-library/generated/c \
+  -I ./proto \
   common.proto
 ```
 
@@ -130,7 +130,7 @@ cp ${NANOPB}/pb_common.h \
    ${NANOPB}/pb.h \    
    ./arduino-library/generated/c
    
-zip -j ./arduino-library/generated/c/ArdUI.zip /./arduino-library/generated/c/*.h /arduino-library/generated/c/*.c
+zip -j ./arduino-library/generated/c/ArdUI.zip ./arduino-library/generated/c/*.h ./arduino-library/generated/c/*.c
 ```
 
 You can include the Library zip can in Arduino IDE via:\
