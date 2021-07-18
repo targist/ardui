@@ -72,36 +72,20 @@ function parseInstructions(text) {
     });
 }
 
-const port = new SerialPort("<Your Serial port i.e: /dev/cu.usbmodem14200>", {
+const port = new SerialPort(process.argv[1], {
   baudRate: 9600,
 });
 
 const parser = port.pipe(new Readline());
-parser.on("data", console.log);
-
-function switchOfLed13Program() {
-  const setup = new common.Script().setInstructionsList([
-    new common.Instruction()
-      .setSetpinmode(
-        new common.SetPinMode()
-          .setPin(13)
-          .setMode(common.Mode.OUTPUT),
-      ),
-    new common.Instruction().setDigitalwrite(
-      new common.DigitalWrite()
-        .setPin(13)
-        .setLevel(common.Level.LOW),
-    ),
-  ]);
-  return new common.GenericArduinoProgram()
-    .setSetup(setup);
-}
+parser.on("data",  function(line) {
+  console.log("From Arduino >> " + line);
+});
 
 function programFromReq(req) {
   const setupInstructions = parseInstructions(req.body.setup);
   const loopInstructions = parseInstructions(req.body.loop);
-  console.log(">>>loop=" + loopInstructions.length);
-  console.log(">>>setup=" + setupInstructions.length);
+  console.log(">>>setup-instructions-count=" + setupInstructions.length);
+  console.log(">>>loop-instructions-count=" + loopInstructions.length);
   const setup = new common.Script().setInstructionsList(setupInstructions);
   const loop = new common.Script().setInstructionsList(loopInstructions);
   return new common.GenericArduinoProgram()
@@ -111,15 +95,13 @@ function programFromReq(req) {
 
 app.post("/upload", function (req, res) {
   const program = programFromReq(req);
-  // const program = switchOfLed13Program();
   const buffer = program.serializeBinary();
   console.log("buffer=" + buffer);
   console.log("buffer-length=" + buffer.length);
   port.write([buffer.length]);
   port.write(buffer);
   res.send(
-    "Writing " + buffer.length + " bytes to Arduino Serial port " +
-      req.body.port,
+    "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
   );
 });
 

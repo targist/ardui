@@ -73,9 +73,8 @@ analogwrite pin value
 sleep duration
 ```
 
-You have to specify the Arduino port in
-[html-serial-ui/server/index.js](./html-serial-ui/server/index.js)\
-Press upload button and it should work.
+Press upload button and it should work.  
+More details can be found [Here](./html-serial-ui/README.md)
 
 ## How bindings are generated?
 
