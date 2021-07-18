@@ -7,5 +7,5 @@ dependencyResolutionManagement {
         maven { url 'https://jitpack.io' }
     }
 }
-rootProject.name = "MagicEmbed"
+rootProject.name = "ArdUI"
 include ':app'

@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package com.targist.magicembed.proto;
+package com.targist.ardui.proto;
 
 message GenericArduinoProgram {
   SetupScript setup = 1;

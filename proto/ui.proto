@@ -1,5 +1,5 @@
 syntax = "proto3";
-package com.targist.magicembed.proto;
+package com.targist.ardui.proto;
 
 import "google/protobuf/timestamp.proto";
 import "common.proto";
