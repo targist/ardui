@@ -4,7 +4,7 @@
 If you are more a fun of video explanation go to this youtube video
 
 <p align="center">
-  <a href="https://www.qries.com/">
+  <a href="https://www.youtube.com/watch?v=AGjHHh4m1q0">
     <img width="460" height="300" src="https://img.youtube.com/vi/AGjHHh4m1q0/0.jpg">
   </a>
 </p>
