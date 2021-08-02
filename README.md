@@ -1,5 +1,15 @@
 # ArdUI
 
+### A video explanation
+If you are more a fun of video explanation go to this youtube video
+
+<p align="center">
+  <a href="https://www.qries.com/">
+    <img width="460" height="300" src="https://img.youtube.com/vi/AGjHHh4m1q0/0.jpg">
+  </a>
+</p>
+
+### Project aim
 This project aims to simplify creation of basic Arduino programs by just editing
 a UI on Android. Instead of the usual Arduino development cycle:
 
@@ -16,6 +26,7 @@ Serial.
 </p>
 
 In order to make the setup work you have to do two things
+
 
 ### Build and deploy the generic program to your Arduino board
 
