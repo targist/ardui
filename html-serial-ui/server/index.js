@@ -9,6 +9,10 @@ app.use(express.urlencoded({
   extended: true,
 }));
 
+const port = new SerialPort(process.argv[1], {
+  baudRate: 9600,
+});
+
 app.get("/", function (req, res) {
   res.render("public/index.html");
 });
@@ -72,10 +76,6 @@ function parseInstructions(text) {
     });
 }
 
-const port = new SerialPort(process.argv[1], {
-  baudRate: 9600,
-});
-
 const parser = port.pipe(new Readline());
 parser.on("data",  function(line) {
   console.log("From Arduino >> " + line);
@@ -86,8 +86,8 @@ function programFromReq(req) {
   const loopInstructions = parseInstructions(req.body.loop);
   console.log(">>>setup-instructions-count=" + setupInstructions.length);
   console.log(">>>loop-instructions-count=" + loopInstructions.length);
-  const setup = new common.Script().setInstructionsList(setupInstructions);
-  const loop = new common.Script().setInstructionsList(loopInstructions);
+  const setup = new common.SetupScript().setInstructionsList(setupInstructions);
+  const loop = new common.LoopScript().setInstructionsList(loopInstructions);
   return new common.GenericArduinoProgram()
     .setSetup(setup)
     .setLoop(loop);
