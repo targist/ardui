@@ -11,7 +11,7 @@ app.use(express.urlencoded({
 }));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
-const port = new SerialPort(process.argv[2], {
+const port = new SerialPort(process.argv[1], {
   baudRate: 9600,
 });
 
@@ -79,8 +79,9 @@ function parseInstructions(text) {
 }
 
 const parser = port.pipe(new Readline());
+var logs = "";
 parser.on("data", function (line) {
-  console.log("From Arduino >> " + line);
+  logs += "From Arduino >> " + line + "\n";
 });
 
 function programFromReq(req) {
@@ -102,11 +103,14 @@ app.post("/upload", function (req, res) {
   console.log(">>>buffer-length=" + buffer.length);
   port.write([buffer.length]);
   port.write(buffer);
-  res.send(
-    "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
-  );
+  logs += "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path + "\n";
 });
 
-app.listen(8081, function () {
-  console.log("ArdUI listening on port http://0.0.0.0:8081");
+app.post("/logs", function (req, res) {
+  res.send(logs);
+  logs = "";
+});
+
+app.listen(8888, function () {
+  console.log("ArdUI listening on port http://0.0.0.0:8888");
 });
