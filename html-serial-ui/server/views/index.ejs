@@ -1,6 +1,15 @@
 <!DOCTYPE html>
 <html>
 <title>ArdUI HTML UI</title>
+<table align="center">
+    <tr>
+        <td><img src="targist-logo.png" /></td>
+        <td>
+            <h2>Communicating with Arduino on <%= port %>
+            </h2>
+        </td>
+    </tr>
+</table>
 
 <head>
     <script lang="text/javascript">
@@ -24,20 +33,23 @@
 </head>
 
 <body>
-    <img src="targist-logo.png" />
-    <div align="center">
-        <label for="setup">Setup instructions(max=8):</label><br>
-        <textarea id="setup" name="setup" rows="16" cols="50" style="resize: none;"></textarea>
-        <br><br>
-        <label for="loop">Loop instructions(max=16):</label><br>
-        <textarea id="loop" name="loop" rows="16" cols="50" style="resize: none;"></textarea>
-        <br><br>
-        <input type="submit" value="Upload" onclick="upload()">
-        <br><br>
-        <label for="logs">Logs</label><br>
-        <textarea id="logs" name="logs" rows="5" cols="50" style="resize: none;"></textarea>
-        <br><br>
-    </div>
+    <table align="center">
+        <tr>
+            <td>
+                <div align="center">
+                    <label for="setup">Setup instructions(max=8):</label><br>
+                    <textarea id="setup" name="setup" rows="8" cols="50" style="resize: none;"></textarea>
+                    <br>
+                    <label for="loop">Loop instructions(max=16):</label><br>
+                    <textarea id="loop" name="loop" rows="16" cols="50" style="resize: none;"></textarea>
+                    <br>
+                    <input type="submit" value="Upload" onclick="upload()">
+                    <br>
+                    <textarea id="logs" name="logs" rows="5" cols="50" style="resize: none;"></textarea>
+                </div>
+            </td>
+        </tr>
+    </table>
 </body>
 
 </html>
