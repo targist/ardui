@@ -37,7 +37,7 @@ in order to do that
   _(You can include the Library zip can in Arduino IDE via: Sketch -> Include
   Library -> Add .ZIP Library.)_
 - Upload
-  [GenericProgram.ino](./arduino-library/sketches/GenericProgram/GenericProgram.ino)
+  [GenericProgram.ino](./arduino-library/GenericProgram/GenericProgram.ino)
   to your Arduino board.
 
 That's it!
@@ -123,25 +123,27 @@ git clone https://github.com/nanopb/nanopb.git
 
 2. generate the bindings from .proto files:
 
-```
+```bash
 NANOPB=path/to/nanopb
 ${NANOPB}/generator/nanopb_generator.py \
-  -D ./arduino-library/generated/c \
+  -D ./arduino-library/generated \
   -I ./proto \
   common.proto
 ```
 
-3. copy the utility nanopb files:
+3. create the library as a ZIP file:
 
-```
-cp ${NANOPB}/pb_common.h \
+```bash
+zip -j arduino-library/ArdUI.zip \
+   ${NANOPB}/pb_common.h \
    ${NANOPB}/pb_common.c \
    ${NANOPB}/pb_decode.h \
    ${NANOPB}/pb_decode.c \
-   ${NANOPB}/pb.h \    
-   ./arduino-library/generated/c
-   
-zip -j ./arduino-library/generated/c/ArdUI.zip ./arduino-library/generated/c/*.h ./arduino-library/generated/c/*.c
+   ${NANOPB}/pb.h \
+   arduino-library/generated/common.pb.h \
+   arduino-library/generated/common.pb.c \
+   arduino-library/ArdUI.h \
+   arduino-library/ArdUI.cpp
 ```
 
 You can include the Library zip can in Arduino IDE via:\

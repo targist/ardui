@@ -1,3 +1,6 @@
+#include "ArdUI.h"
+
+#include <Arduino.h>
 #include <common.pb.h>
 #include <pb_decode.h>
 
@@ -10,17 +13,20 @@
 #define DPRINTLN(...)
 #endif
 #define UNINITIALIZED ((int)-1)
-#define BAUD ((int)9600)
+
+namespace {
 int bytes_length = UNINITIALIZED;
 int curr = 0;
 uint8_t bytes[256];
+
 com_targist_ardui_proto_GenericArduinoProgram program =
     com_targist_ardui_proto_GenericArduinoProgram_init_zero;
+}  // namespace
+
 void run(const com_targist_ardui_proto_Instruction *instructions,
          pb_size_t instructions_count) {
   for (pb_size_t i = 0; i < instructions_count; ++i) {
-    const com_targist_ardui_proto_Instruction *instruction =
-        &instructions[i];
+    const com_targist_ardui_proto_Instruction *instruction = &instructions[i];
     switch (instruction->which_action) {
       case com_targist_ardui_proto_Instruction_setPinMode_tag:
         switch (instruction->action.setPinMode.mode) {
@@ -69,8 +75,7 @@ void deserializeProgram() {
   bytes_length = UNINITIALIZED;
   pb_istream_t stream = pb_istream_from_buffer(bytes, len);
   bool status = pb_decode(
-      &stream, com_targist_ardui_proto_GenericArduinoProgram_fields,
-      &program);
+      &stream, com_targist_ardui_proto_GenericArduinoProgram_fields, &program);
   DPRINTLN(status);
 
   if (!status) {
@@ -81,16 +86,17 @@ void deserializeProgram() {
 
   Serial.print(F("Program decoding was Successful bytes length = "));
   Serial.println(len);
-
   Serial.println(F("A new configuration has been loaded"));
+}
+
+void runSetupInstructions() {
   Serial.println(F("Running setup instructions.."));
   run(program.setup.instructions, program.setup.instructions_count);
   Serial.println(F("Done."));
 }
 
-void setup() {
-  Serial.begin(BAUD);
-  DPRINTLN(F("Finished setup"));
+void runLoopInstructions() {
+  run(program.loop.instructions, program.loop.instructions_count);
 }
 
 bool readBuffer() {
@@ -114,12 +120,4 @@ bool readBuffer() {
       }
     }
   }
-}
-
-void loop() {
-  if (readBuffer()) {
-    deserializeProgram();
-  }
-
-  run(program.loop.instructions, program.loop.instructions_count);
 }
