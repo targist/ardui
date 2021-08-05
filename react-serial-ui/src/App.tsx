@@ -26,10 +26,11 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     justifyContent: "flex-end",
     border: "none",
-    paddingInline: theme.spacing(1)
+    paddingInline: theme.spacing(1),
+    marginBlock: 0
   },
   logs: {
-    height: "40vh",
+    height: "35vh",
     cursor: "text",
     "& > h2": {
       marginLeft: theme.spacing(1),
@@ -37,7 +38,8 @@ const useStyles = makeStyles(theme => ({
     "& > .paper": {
       height: "100%",
       padding: theme.spacing(2),
-      fontFamily: 'Menlo, Monaco, "Courier New", monospace'
+      fontFamily: 'Menlo, Monaco, "Courier New", monospace',
+      overflow: "scroll"
     },
   },
   uploadButton: {
@@ -116,6 +118,7 @@ function App() {
             Logs:
           </Typography>
           <Paper className="paper" variant="outlined" >
+            {/* TODO: Add auto scroll */}
             {logs.map((log, i) => <div key={`key-${i}`} >
               <Typography variant="body2" >
                 {log}
