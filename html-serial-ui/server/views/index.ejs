@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<title>ArdUI HTML UI</title>
+<table align="center">
+    <tr>
+        <td><img src="targist-logo.png" /></td>
+        <td>
+            <h2>Communicating with Arduino on <%= port %>
+            </h2>
+        </td>
+    </tr>
+</table>
+
+<head>
+    <script lang="text/javascript">
+        function upload() {
+            var setup = document.getElementById("setup").value;
+            var loop = document.getElementById("loop").value;
+            var logs = document.getElementById("logs");
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/upload', true);
+            //Send the proper header information along with the request
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onreadystatechange = function () { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE) {
+                    logs.value = "Successfully uploaded.\n";
+                }
+            }
+            logs.value = "Uploading program ..";
+            xhr.send("setup=" + setup + "&loop=" + loop);
+        }
+
+        setInterval(function retrieveLogs() {
+            var logs = document.getElementById("logs");
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", '/logs', true);
+            xhr.onreadystatechange = function () { // Call a function when the state changes.
+                if (this.readyState === XMLHttpRequest.DONE) {
+                    logs.value += this.responseText;
+                }
+            }
+            xhr.send(null);
+        }, 1000);
+
+        function clearLogs() {
+            document.getElementById("logs").value = "";
+        }
+    </script>
+</head>
+
+<body>
+    <table align="center">
+        <tr>
+            <td>
+                <div align="center">
+                    <label for="setup">Setup instructions(max=8):</label><br>
+                    <textarea id="setup" name="setup" rows="8" cols="50" style="resize: none;"></textarea>
+                    <br>
+                    <label for="loop">Loop instructions(max=16):</label><br>
+                    <textarea id="loop" name="loop" rows="16" cols="50" style="resize: none;"></textarea>
+                    <br>
+                    <input type="submit" value="upload program" onclick="upload()">
+                    <input type="submit" value="clear logs" onclick="clearLogs()">
+                    <br>
+                    <textarea id="logs" name="logs" rows="5" cols="50" style="resize: none;"></textarea>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+
+</html>

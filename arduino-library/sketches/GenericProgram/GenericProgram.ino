@@ -91,7 +91,6 @@ void deserializeProgram() {
 void setup() {
   Serial.begin(BAUD);
   DPRINTLN(F("Finished setup"));
-  Serial.println(sizeof(com_targist_ardui_proto_GenericArduinoProgram));
 }
 
 bool readBuffer() {

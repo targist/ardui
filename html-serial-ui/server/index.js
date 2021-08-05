@@ -2,19 +2,21 @@ const common = require("../js/common_pb");
 const SerialPort = require("serialport");
 const Readline = SerialPort.parsers.Readline;
 const express = require("express");
+
 const app = express();
 var path = require("path");
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "views")));
 app.use(express.urlencoded({
   extended: true,
 }));
-
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 const port = new SerialPort(process.argv[1], {
   baudRate: 9600,
 });
 
 app.get("/", function (req, res) {
-  res.render("public/index.html");
+  res.render("index", { port: port.path });
 });
 
 function parseInstructions(text) {
@@ -77,8 +79,9 @@ function parseInstructions(text) {
 }
 
 const parser = port.pipe(new Readline());
-parser.on("data",  function(line) {
-  console.log("From Arduino >> " + line);
+var logs = "";
+parser.on("data", function (line) {
+  logs += "From Arduino >> " + line + "\n";
 });
 
 function programFromReq(req) {
@@ -96,15 +99,18 @@ function programFromReq(req) {
 app.post("/upload", function (req, res) {
   const program = programFromReq(req);
   const buffer = program.serializeBinary();
-  console.log("buffer=" + buffer);
-  console.log("buffer-length=" + buffer.length);
+  console.log(">>>buffer=" + buffer);
+  console.log(">>>buffer-length=" + buffer.length);
   port.write([buffer.length]);
   port.write(buffer);
-  res.send(
-    "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
-  );
+  logs += "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path + "\n";
 });
 
-app.listen(8081, function () {
-  console.log("ArdUI listening on port http://0.0.0.0:8081");
+app.post("/logs", function (req, res) {
+  res.send(logs);
+  logs = "";
+});
+
+app.listen(8888, function () {
+  console.log("ArdUI listening on port http://0.0.0.0:8888");
 });
