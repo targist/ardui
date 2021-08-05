@@ -17,7 +17,7 @@ export default function useLogs() {
       console.log("Disconnected from socket");
     });
 
-    socket.on("all-logs", (allLogs: any) => {
+    socket.on("logs", (allLogs: any) => {
       if (allLogs instanceof Array) setLogs(allLogs);
       else setLogs([allLogs]);
     });

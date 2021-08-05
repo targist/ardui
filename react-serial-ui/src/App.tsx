@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     // height: "100vh"
   },
   setup: {
-    height: "50vh",
+    height: "45vh",
     "& > .paper": {
       height: "100%"
     },
@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     "& > .paper": {
       height: "100%"
     },
-    height: "50vh"
+    height: "45vh"
   },
   buttons: {
     display: "flex",
@@ -31,8 +31,13 @@ const useStyles = makeStyles(theme => ({
   logs: {
     height: "40vh",
     cursor: "text",
+    "& > h2": {
+      marginLeft: theme.spacing(1),
+    },
     "& > .paper": {
-      height: "100%"
+      height: "100%",
+      padding: theme.spacing(2),
+      fontFamily: 'Menlo, Monaco, "Courier New", monospace'
     },
   },
   uploadButton: {
@@ -40,6 +45,10 @@ const useStyles = makeStyles(theme => ({
   },
   errorMessage: {
     float: "right"
+  },
+  title: {
+    textAlign: "center",
+    margin: theme.spacing(1),
   }
 }))
 
@@ -65,21 +74,31 @@ function App() {
         spacing={2}>
         <Grid className={classes.setup} item xs={12} md={6}>
           <Paper className="paper" variant="outlined" >
+            <Typography className={classes.title} variant="h6" component="h2">
+              Setup:
+            </Typography>
             <Editor
               onChange={(value?: string) => setSetup(value || "")}
-              height="100%"
-              defaultLanguage="c"
-              defaultValue="// setup script"
+              height="80%"
+              // defaultLanguage="c"
+              defaultLanguage="plaintext"
+              // defaultValue="// setup script"
+              defaultValue=""
             />
           </Paper>
         </Grid>
         <Grid className={classes.loop} item xs={12} md={6}>
           <Paper className="paper" variant="outlined" >
+            <Typography className={classes.title} variant="h6" component="h2">
+              Loop:
+            </Typography>
             <Editor
               onChange={(value?: string) => setLoop(value || "")}
-              height="100%"
-              defaultLanguage="c"
-              defaultValue="// loop script"
+              height="80%"
+              // defaultLanguage="c"
+              defaultLanguage="plaintext"
+              // defaultValue="// loop script"
+              defaultValue=""
             />
           </Paper>
         </Grid>
@@ -93,8 +112,15 @@ function App() {
         </Grid>
 
         <Grid className={classes.logs} item xs={12}>
+          <Typography variant="h6" component="h2">
+            Logs:
+          </Typography>
           <Paper className="paper" variant="outlined" >
-            <pre>{JSON.stringify(logs, null, 2)}</pre>
+            {logs.map((log, i) => <div key={`key-${i}`} >
+              <Typography variant="body2" >
+                {log}
+              </Typography>
+            </div>)}
           </Paper>
 
           {(!connected) && <Typography className={classes.errorMessage} variant="caption" color="error" >Server disconnected</Typography>}
