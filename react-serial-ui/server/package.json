@@ -1,0 +1,20 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cross-env NODE_ENV=dev node src/index.js",
+    "prod": "cross-env NODE_ENV=prod node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "yousfi saad",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-http-proxy": "^1.6.2",
+    "serialport": "^9.2.0",
+    "socket.io": "^4.1.3"
+  }
+}
