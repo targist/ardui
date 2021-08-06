@@ -1,9 +1,0 @@
-{
-  "dependencies": {
-    "ejs": "^3.1.6",
-    "express": "^4.17.1",
-    "google-protobuf": "^3.17.3",
-    "pug": "^3.0.2",
-    "serialport": "^9.2.0"
-  }
-}

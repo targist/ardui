@@ -85,7 +85,7 @@ sleep duration
 ```
 
 Press upload button and it should work.  
-More details can be found [Here](./html-serial-ui/README.md)
+More details can be found [Here](./react-serial-ui/README.md)
 
 ## How bindings are generated?
 
