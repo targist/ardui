@@ -77,7 +77,7 @@ function App() {
         <Grid className={classes.setup} item xs={12} md={6}>
           <Paper className="paper" variant="outlined" >
             <Typography className={classes.title} variant="h6" component="h2">
-              Setup:
+              Setup
             </Typography>
             <Editor
               onChange={(value?: string) => setSetup(value || "")}
@@ -92,7 +92,7 @@ function App() {
         <Grid className={classes.loop} item xs={12} md={6}>
           <Paper className="paper" variant="outlined" >
             <Typography className={classes.title} variant="h6" component="h2">
-              Loop:
+              Loop
             </Typography>
             <Editor
               onChange={(value?: string) => setLoop(value || "")}
@@ -115,7 +115,7 @@ function App() {
 
         <Grid className={classes.logs} item xs={12}>
           <Typography variant="h6" component="h2">
-            Logs:
+            Logs
           </Typography>
           <Paper className="paper" variant="outlined" >
             {/* TODO: Add auto scroll */}
