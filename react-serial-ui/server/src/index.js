@@ -11,19 +11,19 @@ const socketIo = require("socket.io");
 const app = express();
 const server = createServer(app);
 
-const httpServer = createServer(app);
-
 const io = socketIo(server);
 
 const Readline = SerialPort.parsers.Readline;
 
-const { NODE_ENV } = process.env;
+const { NODE_ENV, ARDUINO_PORT } = process.env;
 
 const apiProxy = proxy("localhost:3000/", {
   proxyReqPathResolver: (req) => url.parse(req.baseUrl).path,
 });
-if (NODE_ENV === "dev") app.use("/*", apiProxy);
-else if (NODE_ENV === "prod") {
+
+if (NODE_ENV === "dev") {
+  app.use("/*", apiProxy);
+} else if (NODE_ENV === "prod") {
   const filePath = process.argv[1];
   const dir = path.dirname(filePath);
   const indexFile = path.join(dir, "../../dist", "index.html");
@@ -34,16 +34,13 @@ else if (NODE_ENV === "prod") {
   });
 }
 
-// app.use(cors());
-
-const port = new SerialPort(process.argv[1], {
+const port = new SerialPort(ARDUINO_PORT, {
   baudRate: 9600,
 });
 const parser = port.pipe(new Readline());
 
 const getHandleUpload = (logs) => (data) => {
   try {
-    // const { setup, loop } = data;
     const program = programFromReq({ body: data });
     const buffer = program.serializeBinary();
     console.log("buffer=" + buffer);
@@ -54,8 +51,7 @@ const getHandleUpload = (logs) => (data) => {
       "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
     );
   } catch (error) {
-    // TODO: use different log array for errors
-    logs.push(`error: ${JSON.stringify(error)}`)
+    logs.push(`error: Please check your instructions.`);
   }
 };
 
