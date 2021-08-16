@@ -1,0 +1,11 @@
+Description:
+This make the Arduino LED(pin=13) blink.
+
+Setup:
+pinmode 13 output
+
+Loop:
+digitalwrite 13 low
+sleep 1000
+digitalwrite 13 high
+sleep 1000

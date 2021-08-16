@@ -28,7 +28,7 @@ function parseInstructions(text) {
           pin = parseInt(tokens[1]);
           value = parseInt(tokens[2]);
           console.log(">>>analogwrite " + pin + " " + value);
-          return new common.Instruction().setDigitalwrite(
+          return new common.Instruction().setAnalogwrite(
             new common.AnalogWrite().setPin(pin).setValue(value)
           );
 

@@ -1,0 +1,24 @@
+Description:
+This makes the RGB LED switch colors from R to G to B.
+ 
+
+Setup:
+pinmode 3 output
+pinmode 5 output
+pinmode 7 output
+pinmode 9 output
+digitalwrite 9 high
+
+Loop:
+digitalwrite 3 low
+digitalwrite 5 high
+digitalwrite 7 high
+sleep 1000
+digitalwrite 3 high
+digitalwrite 5 low
+digitalwrite 7 high
+sleep 1000
+digitalwrite 3 high
+digitalwrite 5 high
+digitalwrite 7 low
+sleep 1000
