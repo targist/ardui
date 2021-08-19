@@ -1,9 +1,7 @@
 #pragma once
 
-void deserializeProgram();
+bool read_program_bytes();
 
-void runSetupInstructions();
+int execute_setup();
 
-void runLoopInstructions();
-
-bool readBuffer();
+int execute_loop();

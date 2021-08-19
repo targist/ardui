@@ -45,11 +45,15 @@ const getHandleUpload = (logs) => (data) => {
     const buffer = program.serializeBinary();
     console.log("buffer=" + buffer);
     console.log("buffer-length=" + buffer.length);
-    port.write([buffer.length]);
-    port.write(buffer);
     logs.push(
       "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
     );
+    port.write([buffer.length]);
+    port.write(buffer, function (err) {
+      if (err) {
+        logs.push('Error on write: ' + err.message);
+      }
+    });
   } catch (error) {
     logs.push(`error: Please check your instructions.`);
   }
