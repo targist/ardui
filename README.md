@@ -154,7 +154,7 @@ More details can be found
 
 ## Limitations
 
-- Currently, only 8 instructions are supported for setup and 16 for loop.
+- Currently, maximum size for a program is 255 bytes.
 
 - 4 types of instructions are supported now:
   - setPinMode
