@@ -124,29 +124,11 @@ git clone https://github.com/nanopb/nanopb.git
 2. generate the bindings from .proto files:
 
 ```bash
-NANOPB=path/to/nanopb
-${NANOPB}/generator/nanopb_generator.py \
-  -D ./arduino-library/generated \
-  -I ./proto \
-  common.proto
+cd arduino-library
+./generate-arduino-library.sh path/to/nanopb
 ```
 
-3. create the library as a ZIP file:
-
-```bash
-zip -j arduino-library/ArdUI.zip \
-   ${NANOPB}/pb_common.h \
-   ${NANOPB}/pb_common.c \
-   ${NANOPB}/pb_decode.h \
-   ${NANOPB}/pb_decode.c \
-   ${NANOPB}/pb.h \
-   arduino-library/generated/common.pb.h \
-   arduino-library/generated/common.pb.c \
-   arduino-library/ArdUI.h \
-   arduino-library/ArdUI.cpp
-```
-
-You can include the Library zip can in Arduino IDE via:\
+This will generate ArdUI.zip library that you can include in Arduino IDE via:\
 _Sketch -> Include Library -> Add .ZIP Library.._
 
 N.B: probably you will need the nanopb dependencies for Python.
@@ -162,8 +144,8 @@ pip3 install scons protobuf grpcio-tools
 to create the needed JS binding you can run the following command:
 
 ```
-protoc --proto_path=./proto \
-       --js_out=import_style=commonjs,binary:html-serial-ui/js \
+protoc --proto_path=./proto \             
+       --js_out=import_style=commonjs,binary:react-serial-ui/server/src \
        common.proto
 ```
 
