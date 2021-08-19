@@ -121,14 +121,14 @@ C bindings are generated for our project with the following steps:
 git clone https://github.com/nanopb/nanopb.git
 ```
 
-2. generate the bindings from .proto files:
+2. generate the library:
 
 ```bash
 cd arduino-library
 ./generate-arduino-library.sh path/to/nanopb
 ```
 
-This will generate ArdUI.zip library that you can include in Arduino IDE via:\
+This will generate ArdUI.zip that you can include in Arduino IDE via:\
 _Sketch -> Include Library -> Add .ZIP Library.._
 
 N.B: probably you will need the nanopb dependencies for Python.
