@@ -1,3 +1,6 @@
+
+[<img src="https://img.shields.io/badge/slack-@targist/ardui-greeb.svg">](https://targist.slack.com/archives/C02CG91DS7J)
+
 # ArdUI
 
 ### A video explanation
