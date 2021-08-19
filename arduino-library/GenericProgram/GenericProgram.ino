@@ -8,9 +8,9 @@ void setup() {
 }
 
 void loop() {
-  if (readBuffer()) {
-    deserializeProgram();
-    runSetupInstructions();
+  if (readProgramBytes()) {
+    runProgram();
+  } else {
+    runLoop();
   }
-  runLoopInstructions();
 }

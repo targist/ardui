@@ -162,8 +162,8 @@ pip3 install scons protobuf grpcio-tools
 to create the needed JS binding you can run the following command:
 
 ```
-protoc --proto_path=./proto \
-       --js_out=import_style=commonjs,binary:html-serial-ui/js \
+protoc --proto_path=./proto \             
+       --js_out=import_style=commonjs,binary:react-serial-ui/server/src \
        common.proto
 ```
 
