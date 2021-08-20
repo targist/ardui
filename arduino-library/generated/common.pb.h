@@ -23,11 +23,11 @@ typedef enum _com_targist_ardui_proto_Level {
 
 /* Struct definitions */
 typedef struct _com_targist_ardui_proto_LoopScript { 
-    pb_callback_t instructions; 
+    void* instructions; 
 } com_targist_ardui_proto_LoopScript;
 
 typedef struct _com_targist_ardui_proto_SetupScript { 
-    pb_callback_t instructions; 
+    void* instructions; 
 } com_targist_ardui_proto_SetupScript;
 
 typedef struct _com_targist_ardui_proto_AnalogWrite { 
@@ -128,13 +128,15 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  loop,              2)
 
 #define com_targist_ardui_proto_SetupScript_FIELDLIST(X, a) \
 X(a, CALLBACK, REPEATED, MESSAGE,  instructions,      1)
-#define com_targist_ardui_proto_SetupScript_CALLBACK pb_default_field_callback
+extern bool com_targist_ardui_proto_SetupScript_callback(pb_istream_t *istream, pb_ostream_t *ostream, const pb_field_t *field);
+#define com_targist_ardui_proto_SetupScript_CALLBACK com_targist_ardui_proto_SetupScript_callback
 #define com_targist_ardui_proto_SetupScript_DEFAULT NULL
 #define com_targist_ardui_proto_SetupScript_instructions_MSGTYPE com_targist_ardui_proto_Instruction
 
 #define com_targist_ardui_proto_LoopScript_FIELDLIST(X, a) \
 X(a, CALLBACK, REPEATED, MESSAGE,  instructions,      1)
-#define com_targist_ardui_proto_LoopScript_CALLBACK pb_default_field_callback
+extern bool com_targist_ardui_proto_LoopScript_callback(pb_istream_t *istream, pb_ostream_t *ostream, const pb_field_t *field);
+#define com_targist_ardui_proto_LoopScript_CALLBACK com_targist_ardui_proto_LoopScript_callback
 #define com_targist_ardui_proto_LoopScript_DEFAULT NULL
 #define com_targist_ardui_proto_LoopScript_instructions_MSGTYPE com_targist_ardui_proto_Instruction
 

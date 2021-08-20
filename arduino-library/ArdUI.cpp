@@ -94,6 +94,7 @@ bool read_program_bytes() {
     if (next_buffer_length == UNINITIALIZED) {
       next_buffer_length = (size_t)r;
       curr = 0;
+      return false;
     } else {
       buffer[curr++] = (uint8_t)r;
       if (curr == next_buffer_length) {
@@ -107,21 +108,33 @@ bool read_program_bytes() {
   }
 }
 
-bool instruction_callback(pb_istream_t *stream, const pb_field_t *field,
-                          void **arg) {
-  if (!stream) return true;
-
-  char *c = (char *)(*arg);
-  if (*c == 's' && !run_setup) return true;
-  if (*c == 'l' && !run_loop) return true;
+bool script_callback(pb_istream_t *istream, pb_ostream_t *ostream,
+                     const pb_field_iter_t *field, bool run, int tag) {
+  if (!run) return true;
+  if (istream == NULL || field->tag != tag) return true;
 
   com_targist_ardui_proto_Instruction instruction = {};
-  if (!pb_decode(stream, com_targist_ardui_proto_Instruction_fields,
-                 &instruction)) {
+  if (!pb_decode(istream, com_targist_ardui_proto_Instruction_fields,
+                 &instruction))
     return false;
-  }
 
-  return run_instruction(&instruction);
+  run_instruction(&instruction);
+
+  return true;
+}
+
+bool com_targist_ardui_proto_SetupScript_callback(
+    pb_istream_t *istream, pb_ostream_t *ostream,
+    const pb_field_iter_t *field) {
+  return script_callback(istream, ostream, field, run_setup,
+                         com_targist_ardui_proto_SetupScript_instructions_tag);
+}
+
+bool com_targist_ardui_proto_LoopScript_callback(pb_istream_t *istream,
+                                                 pb_ostream_t *ostream,
+                                                 const pb_field_iter_t *field) {
+  return script_callback(istream, ostream, field, run_loop,
+                         com_targist_ardui_proto_LoopScript_instructions_tag);
 }
 
 int run() {
@@ -133,10 +146,6 @@ int run() {
 
   pb_istream_t input = pb_istream_from_buffer(buffer, curr_buffer_length);
   com_targist_ardui_proto_GenericArduinoProgram program = {};
-  program.setup.instructions.funcs.decode = &instruction_callback;
-  program.setup.instructions.arg = (void *)"s";
-  program.loop.instructions.funcs.decode = &instruction_callback;
-  program.loop.instructions.arg = (void *)"l";
   if (!pb_decode(&input, com_targist_ardui_proto_GenericArduinoProgram_fields,
                  &program)) {
     DPRINTLN(F("Running program failed!"));
