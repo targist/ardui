@@ -1,5 +1,5 @@
 
-[<img src="https://img.shields.io/badge/slack-@targist/ardui-greeb.svg">](https://targist.slack.com/archives/C02CG91DS7J)
+[<img src="https://img.shields.io/badge/slack-@targist/ardui-greeb.svg">](https://join.slack.com/t/targist/shared_invite/zt-upnlwih0-EGt86TLh1b8K3PpG9bj9dw)
 
 # ArdUI
 
