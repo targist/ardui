@@ -6,7 +6,11 @@
 </p>
 
 ## Launch webapp instructions
-
+To launch the web server run from your commandline
 ```bash
+$ cd react-serial-ui
 $ ./run-nodejs-server.sh <your-arduino-port>
 ```
+
+You can find the examples mentioned in the video here:  
+[Examples](./examples)
