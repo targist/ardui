@@ -38,18 +38,26 @@ const port = new SerialPort(ARDUINO_PORT, {
   baudRate: 9600,
 });
 const parser = port.pipe(new Readline());
-
+const MAX_BUFFER_SIZE = 255;
 const getHandleUpload = (logs) => (data) => {
   try {
     const program = programFromReq({ body: data });
     const buffer = program.serializeBinary();
     console.log("buffer=" + buffer);
     console.log("buffer-length=" + buffer.length);
-    port.write([buffer.length]);
-    port.write(buffer);
     logs.push(
       "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
     );
+    if (buffer.length > MAX_BUFFER_SIZE) {
+      logs.push("Error on write: bytes length = " + buffer.length + " max length possible = " + MAX_BUFFER_SIZE);
+    } else {
+      port.write([buffer.length]);
+      port.write(buffer, function (err) {
+        if (err) {
+          logs.push('Error on write: ' + err.message);
+        }
+      });
+    }
   } catch (error) {
     logs.push(`error: Please check your instructions.`);
   }

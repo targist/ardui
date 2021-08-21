@@ -6,13 +6,13 @@
 #error Regenerate this file with the current version of nanopb generator.
 #endif
 
-PB_BIND(com_targist_ardui_proto_GenericArduinoProgram, com_targist_ardui_proto_GenericArduinoProgram, 2)
+PB_BIND(com_targist_ardui_proto_GenericArduinoProgram, com_targist_ardui_proto_GenericArduinoProgram, AUTO)
 
 
 PB_BIND(com_targist_ardui_proto_SetupScript, com_targist_ardui_proto_SetupScript, AUTO)
 
 
-PB_BIND(com_targist_ardui_proto_LoopScript, com_targist_ardui_proto_LoopScript, 2)
+PB_BIND(com_targist_ardui_proto_LoopScript, com_targist_ardui_proto_LoopScript, AUTO)
 
 
 PB_BIND(com_targist_ardui_proto_Instruction, com_targist_ardui_proto_Instruction, AUTO)

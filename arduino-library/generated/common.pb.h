@@ -22,6 +22,14 @@ typedef enum _com_targist_ardui_proto_Level {
 } com_targist_ardui_proto_Level;
 
 /* Struct definitions */
+typedef struct _com_targist_ardui_proto_LoopScript { 
+    void* instructions; 
+} com_targist_ardui_proto_LoopScript;
+
+typedef struct _com_targist_ardui_proto_SetupScript { 
+    void* instructions; 
+} com_targist_ardui_proto_SetupScript;
+
 typedef struct _com_targist_ardui_proto_AnalogWrite { 
     uint32_t pin; 
     /* Duty cycle which should be between 0 and 255 */
@@ -32,6 +40,13 @@ typedef struct _com_targist_ardui_proto_DigitalWrite {
     com_targist_ardui_proto_Level level; 
     uint32_t pin; 
 } com_targist_ardui_proto_DigitalWrite;
+
+typedef struct _com_targist_ardui_proto_GenericArduinoProgram { 
+    bool has_setup;
+    com_targist_ardui_proto_SetupScript setup; 
+    bool has_loop;
+    com_targist_ardui_proto_LoopScript loop; 
+} com_targist_ardui_proto_GenericArduinoProgram;
 
 typedef struct _com_targist_ardui_proto_SetPinMode { 
     com_targist_ardui_proto_Mode mode; 
@@ -52,23 +67,6 @@ typedef struct _com_targist_ardui_proto_Instruction {
     } action; 
 } com_targist_ardui_proto_Instruction;
 
-typedef struct _com_targist_ardui_proto_LoopScript { 
-    pb_size_t instructions_count;
-    com_targist_ardui_proto_Instruction instructions[16]; 
-} com_targist_ardui_proto_LoopScript;
-
-typedef struct _com_targist_ardui_proto_SetupScript { 
-    pb_size_t instructions_count;
-    com_targist_ardui_proto_Instruction instructions[8]; 
-} com_targist_ardui_proto_SetupScript;
-
-typedef struct _com_targist_ardui_proto_GenericArduinoProgram { 
-    bool has_setup;
-    com_targist_ardui_proto_SetupScript setup; 
-    bool has_loop;
-    com_targist_ardui_proto_LoopScript loop; 
-} com_targist_ardui_proto_GenericArduinoProgram;
-
 
 /* Helper constants for enums */
 #define _com_targist_ardui_proto_Mode_MIN com_targist_ardui_proto_Mode_INPUT
@@ -86,16 +84,16 @@ extern "C" {
 
 /* Initializer values for message structs */
 #define com_targist_ardui_proto_GenericArduinoProgram_init_default {false, com_targist_ardui_proto_SetupScript_init_default, false, com_targist_ardui_proto_LoopScript_init_default}
-#define com_targist_ardui_proto_SetupScript_init_default {0, {com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default}}
-#define com_targist_ardui_proto_LoopScript_init_default {0, {com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default, com_targist_ardui_proto_Instruction_init_default}}
+#define com_targist_ardui_proto_SetupScript_init_default {{{NULL}, NULL}}
+#define com_targist_ardui_proto_LoopScript_init_default {{{NULL}, NULL}}
 #define com_targist_ardui_proto_Instruction_init_default {0, {com_targist_ardui_proto_SetPinMode_init_default}}
 #define com_targist_ardui_proto_SetPinMode_init_default {_com_targist_ardui_proto_Mode_MIN, 0}
 #define com_targist_ardui_proto_DigitalWrite_init_default {_com_targist_ardui_proto_Level_MIN, 0}
 #define com_targist_ardui_proto_AnalogWrite_init_default {0, 0}
 #define com_targist_ardui_proto_Sleep_init_default {0}
 #define com_targist_ardui_proto_GenericArduinoProgram_init_zero {false, com_targist_ardui_proto_SetupScript_init_zero, false, com_targist_ardui_proto_LoopScript_init_zero}
-#define com_targist_ardui_proto_SetupScript_init_zero {0, {com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero}}
-#define com_targist_ardui_proto_LoopScript_init_zero {0, {com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero, com_targist_ardui_proto_Instruction_init_zero}}
+#define com_targist_ardui_proto_SetupScript_init_zero {{{NULL}, NULL}}
+#define com_targist_ardui_proto_LoopScript_init_zero {{{NULL}, NULL}}
 #define com_targist_ardui_proto_Instruction_init_zero {0, {com_targist_ardui_proto_SetPinMode_init_zero}}
 #define com_targist_ardui_proto_SetPinMode_init_zero {_com_targist_ardui_proto_Mode_MIN, 0}
 #define com_targist_ardui_proto_DigitalWrite_init_zero {_com_targist_ardui_proto_Level_MIN, 0}
@@ -103,10 +101,14 @@ extern "C" {
 #define com_targist_ardui_proto_Sleep_init_zero  {0}
 
 /* Field tags (for use in manual encoding/decoding) */
+#define com_targist_ardui_proto_LoopScript_instructions_tag 1
+#define com_targist_ardui_proto_SetupScript_instructions_tag 1
 #define com_targist_ardui_proto_AnalogWrite_pin_tag 1
 #define com_targist_ardui_proto_AnalogWrite_value_tag 2
 #define com_targist_ardui_proto_DigitalWrite_level_tag 1
 #define com_targist_ardui_proto_DigitalWrite_pin_tag 2
+#define com_targist_ardui_proto_GenericArduinoProgram_setup_tag 1
+#define com_targist_ardui_proto_GenericArduinoProgram_loop_tag 2
 #define com_targist_ardui_proto_SetPinMode_mode_tag 1
 #define com_targist_ardui_proto_SetPinMode_pin_tag 2
 #define com_targist_ardui_proto_Sleep_duration_tag 1
@@ -114,10 +116,6 @@ extern "C" {
 #define com_targist_ardui_proto_Instruction_digitalWrite_tag 2
 #define com_targist_ardui_proto_Instruction_analogWrite_tag 3
 #define com_targist_ardui_proto_Instruction_sleep_tag 4
-#define com_targist_ardui_proto_LoopScript_instructions_tag 1
-#define com_targist_ardui_proto_SetupScript_instructions_tag 1
-#define com_targist_ardui_proto_GenericArduinoProgram_setup_tag 1
-#define com_targist_ardui_proto_GenericArduinoProgram_loop_tag 2
 
 /* Struct field encoding specification for nanopb */
 #define com_targist_ardui_proto_GenericArduinoProgram_FIELDLIST(X, a) \
@@ -129,14 +127,16 @@ X(a, STATIC,   OPTIONAL, MESSAGE,  loop,              2)
 #define com_targist_ardui_proto_GenericArduinoProgram_loop_MSGTYPE com_targist_ardui_proto_LoopScript
 
 #define com_targist_ardui_proto_SetupScript_FIELDLIST(X, a) \
-X(a, STATIC,   REPEATED, MESSAGE,  instructions,      1)
-#define com_targist_ardui_proto_SetupScript_CALLBACK NULL
+X(a, CALLBACK, REPEATED, MESSAGE,  instructions,      1)
+extern bool com_targist_ardui_proto_SetupScript_callback(pb_istream_t *istream, pb_ostream_t *ostream, const pb_field_t *field);
+#define com_targist_ardui_proto_SetupScript_CALLBACK com_targist_ardui_proto_SetupScript_callback
 #define com_targist_ardui_proto_SetupScript_DEFAULT NULL
 #define com_targist_ardui_proto_SetupScript_instructions_MSGTYPE com_targist_ardui_proto_Instruction
 
 #define com_targist_ardui_proto_LoopScript_FIELDLIST(X, a) \
-X(a, STATIC,   REPEATED, MESSAGE,  instructions,      1)
-#define com_targist_ardui_proto_LoopScript_CALLBACK NULL
+X(a, CALLBACK, REPEATED, MESSAGE,  instructions,      1)
+extern bool com_targist_ardui_proto_LoopScript_callback(pb_istream_t *istream, pb_ostream_t *ostream, const pb_field_t *field);
+#define com_targist_ardui_proto_LoopScript_CALLBACK com_targist_ardui_proto_LoopScript_callback
 #define com_targist_ardui_proto_LoopScript_DEFAULT NULL
 #define com_targist_ardui_proto_LoopScript_instructions_MSGTYPE com_targist_ardui_proto_Instruction
 
@@ -195,13 +195,13 @@ extern const pb_msgdesc_t com_targist_ardui_proto_Sleep_msg;
 #define com_targist_ardui_proto_Sleep_fields &com_targist_ardui_proto_Sleep_msg
 
 /* Maximum encoded size of messages (where known) */
+/* com_targist_ardui_proto_GenericArduinoProgram_size depends on runtime parameters */
+/* com_targist_ardui_proto_SetupScript_size depends on runtime parameters */
+/* com_targist_ardui_proto_LoopScript_size depends on runtime parameters */
 #define com_targist_ardui_proto_AnalogWrite_size 12
 #define com_targist_ardui_proto_DigitalWrite_size 8
-#define com_targist_ardui_proto_GenericArduinoProgram_size 390
 #define com_targist_ardui_proto_Instruction_size 14
-#define com_targist_ardui_proto_LoopScript_size  256
 #define com_targist_ardui_proto_SetPinMode_size  8
-#define com_targist_ardui_proto_SetupScript_size 128
 #define com_targist_ardui_proto_Sleep_size       6
 
 #ifdef __cplusplus
