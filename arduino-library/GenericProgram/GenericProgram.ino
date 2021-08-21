@@ -4,15 +4,15 @@
 
 void setup() {
   Serial.begin(BAUD);
-  Serial.println("Board reset");
+  Serial.println(F("Board reset"));
 }
 
 void loop() {
   if (read_program_bytes()) {
-    Serial.println("A new configuration has been loaded");
-    Serial.println("Running Setup..");
+    Serial.println(F("A new configuration has been loaded"));
+    Serial.println(F("Running Setup.."));
     execute_setup();
-    Serial.println("Done");
+    Serial.println(F("Done"));
   }
   execute_loop();
 }
