@@ -7,7 +7,7 @@ export default function useLogs() {
   const emit = useRef<((ev: any, data: any) => void) | null>(null);
 
   useEffect(() => {
-    const socket = io("localhost:8081");
+    const socket = io(location.host);
     socket.on("connect", () => {
       setConnected(true);
       console.log("Connected to socket");
