@@ -10,13 +10,6 @@ import Typography from '@material-ui/core/Typography';
 import { blue } from '@material-ui/core/colors';
 import { Port } from '../hooks/useLogs';
 
-const emails = ['username@gmail.com', 'user02@gmail.com'];
-const useStyles = makeStyles({
-  avatar: {
-    backgroundColor: blue[100],
-    color: blue[600],
-  },
-});
 
 export interface ChangePortDialogProps {
   availablePorts: Port[];
@@ -26,7 +19,6 @@ export interface ChangePortDialogProps {
 }
 
 function ChangePortDialog(props: ChangePortDialogProps) {
-  const classes = useStyles();
   const { onClose, selectedPort, open, availablePorts } = props;
 
   const handleClose = () => {
