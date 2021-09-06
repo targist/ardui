@@ -65,14 +65,15 @@ const selectPort = (onData, portArg) => {
     }
   };
 
-  return getHandleUpload;
+  return { getHandleUpload, close: () => { port.close() } };
 }
 
 io.on("connection", (socket) => {
   const logs = [];
   const handleUpload = {};
+  const closePort = {};
   handleUpload.current = (data) => {
-    console.log("Not yet connected");
+    logs.push("Device not yet connected");
   }
 
   socket.on("upload", (data) => {
@@ -89,10 +90,13 @@ io.on("connection", (socket) => {
   socket.on("select-port", (port) => {
     console.log("select-port", { port })
     logs.length = 0;
-    handleUpload.current = selectPort((data) => {
+    closePort.current && closePort.current();
+    const current = selectPort((data) => {
       logs.push(data);
       socket.emit("logs", logs);
-    }, port)(logs);
+    }, port);
+    handleUpload.current = current.getHandleUpload(logs);
+    closePort.current = current.close;
     socket.emit("port-selected", port);
   })
 });
