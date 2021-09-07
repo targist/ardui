@@ -34,46 +34,71 @@ if (NODE_ENV === "dev") {
   });
 }
 
-const port = new SerialPort(ARDUINO_PORT, {
-  baudRate: 9600,
-});
-const parser = port.pipe(new Readline());
-const MAX_BUFFER_SIZE = 255;
-const getHandleUpload = (logs) => (data) => {
-  try {
-    const program = programFromReq({ body: data });
-    const buffer = program.serializeBinary();
-    console.log("buffer=" + buffer);
-    console.log("buffer-length=" + buffer.length);
-    logs.push(
-      "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
-    );
-    if (buffer.length > MAX_BUFFER_SIZE) {
-      logs.push("Error on write: bytes length = " + buffer.length + " max length possible = " + MAX_BUFFER_SIZE);
-    } else {
-      port.write([buffer.length]);
-      port.write(buffer, function (err) {
-        if (err) {
-          logs.push('Error on write: ' + err.message);
-        }
-      });
+const selectPort = (onData, portArg) => {
+  const port = new SerialPort(portArg || ARDUINO_PORT, {
+    baudRate: 9600,
+  });
+  const parser = port.pipe(new Readline());
+  parser.on("data", onData);
+  const MAX_BUFFER_SIZE = 255;
+  const getHandleUpload = (logs) => (data) => {
+    try {
+      const program = programFromReq({ body: data });
+      const buffer = program.serializeBinary();
+      console.log("buffer=" + buffer);
+      console.log("buffer-length=" + buffer.length);
+      logs.push(
+        "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
+      );
+      if (buffer.length > MAX_BUFFER_SIZE) {
+        logs.push("Error on write: bytes length = " + buffer.length + " max length possible = " + MAX_BUFFER_SIZE);
+      } else {
+        port.write([buffer.length]);
+        port.write(buffer, function (err) {
+          if (err) {
+            logs.push('Error on write: ' + err.message);
+          }
+        });
+      }
+    } catch (error) {
+      logs.push(`error: Please check your instructions.`);
     }
-  } catch (error) {
-    logs.push(`error: Please check your instructions.`);
-  }
-};
+  };
+
+  return { getHandleUpload, close: () => { port.close() } };
+}
 
 io.on("connection", (socket) => {
   const logs = [];
-  const handleUpload = getHandleUpload(logs);
-  parser.on("data", (data) => {
-    logs.push(data);
-    socket.emit("logs", logs);
-  });
+  const handleUpload = {};
+  const closePort = {};
+  handleUpload.current = (data) => {
+    logs.push("Device not yet connected");
+  }
+
   socket.on("upload", (data) => {
-    handleUpload(data);
+    handleUpload.current(data);
     socket.emit("logs", logs);
   });
+
+  socket.on("get-available-ports", () => {
+    SerialPort.list().then(ports => {
+      socket.emit('available-ports', ports);
+    })
+  });
+
+  socket.on("select-port", (port) => {
+    console.log("select-port", { port })
+    logs.length = 0;
+    closePort.current && closePort.current();
+    const current = selectPort((data) => {
+      logs.push(data);
+      socket.emit("logs", logs);
+    }, port);
+    handleUpload.current = current.getHandleUpload(logs);
+    closePort.current = current.close;
+    socket.emit("port-selected", port);
+  })
 });
 
 server.listen(8081);

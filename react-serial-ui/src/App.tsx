@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import './App.css'
-import useLogs from './hooks/useLogs'
+import useLogs, { Port } from './hooks/useLogs'
 import { Button, Container, Grid, makeStyles, Paper, Typography } from '@material-ui/core';
 
 import Editor from "@monaco-editor/react";
+import ChangePort from './components/ChangePort';
 
 const useStyles = makeStyles(theme => ({
   container: {
@@ -43,7 +44,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   uploadButton: {
-    color: theme.palette.info.main
+    color: theme.palette.info.main,
+    marginInline: theme.spacing(1)
   },
   errorMessage: {
     float: "right"
@@ -58,7 +60,28 @@ function App() {
   const classes = useStyles();
   const [setup, setSetup] = useState("")
   const [loop, setLoop] = useState("");
-  const { connected, logs, commands } = useLogs();
+  const { connected, logs, commands, selectedPort, availablePorts } = useLogs();
+
+
+  const changeSelectedPort = useCallback(
+    (port: Port | null) => {
+      if (port && port.path)
+        commands.sendSelectPortReq(port.path);
+    },
+    [commands],
+  )
+
+  useEffect(() => {
+    if (connected && !selectedPort) {
+      const arduinoPort = availablePorts.find(({ manufacturer }) => {
+        return manufacturer && (manufacturer || "").toLowerCase().includes("arduino");
+      });
+
+      if (arduinoPort) {
+        changeSelectedPort(arduinoPort);
+      }
+    }
+  }, [connected, availablePorts])
 
   const handleUpload = () => {
     commands.upload({
@@ -107,6 +130,10 @@ function App() {
 
         <Grid item xs={12}>
           <Paper className={classes.buttons} variant="outlined" >
+            {
+              availablePorts.length > 1
+              && <ChangePort availablePorts={availablePorts} selectedPort={selectedPort} setSelectedPort={port => changeSelectedPort(port)} />
+            }
             <Button onClick={handleUpload} variant="outlined" className={classes.uploadButton} disabled={!connected} >
               Upload
             </Button>
@@ -125,8 +152,13 @@ function App() {
               </Typography>
             </div>)}
           </Paper>
-
-          {(!connected) && <Typography className={classes.errorMessage} variant="caption" color="error" >Server disconnected</Typography>}
+          {connected && availablePorts
+            ? (
+              selectedPort && <Typography className={classes.errorMessage} variant="caption" color="inherit" >Port: {selectedPort}</Typography>
+            ) :
+            (
+              <Typography className={classes.errorMessage} variant="caption" color="error" >Server disconnected</Typography>
+            )}
         </Grid>
       </Grid>
     </Container>
