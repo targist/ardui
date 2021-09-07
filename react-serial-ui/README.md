@@ -9,7 +9,7 @@
 To launch the web server run from your command line
 ```bash
 $ cd react-serial-ui
-$ ./run-nodejs-server.sh <your-arduino-port>
+$ ./run-nodejs-server.sh
 ```
 
-You can find the examples mentioned in the video here: [browser-examples](./examples)
+You can find the examples mentioned in the video here: [demo-examples](./examples)
