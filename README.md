@@ -72,6 +72,8 @@ app)
 
 ## Web interface
 
+![ardui-react-ui](./images/ardui-react-ui.png)
+
 A NodeJS application is provided too in case you don't have access to an Android
 phone. The interface is pretty simple and basic; you have 2 text fields:
 
