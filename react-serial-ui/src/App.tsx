@@ -58,8 +58,11 @@ const useStyles = makeStyles(theme => ({
 
 function App() {
   const classes = useStyles();
-  const [setup, setSetup] = useState("")
-  const [loop, setLoop] = useState("");
+  const [setup, setSetup] = useState(`pinmode 13 output\n`);
+  const [loop, setLoop] = useState(`digitalwrite 13 low
+sleep 1000
+digitalwrite 13 high
+sleep 1000\n`);
   const { connected, logs, commands, selectedPort, availablePorts } = useLogs();
 
 
@@ -108,7 +111,7 @@ function App() {
               // defaultLanguage="c"
               defaultLanguage="plaintext"
               // defaultValue="// setup script"
-              defaultValue=""
+              defaultValue={setup}
             />
           </Paper>
         </Grid>
@@ -123,7 +126,7 @@ function App() {
               // defaultLanguage="c"
               defaultLanguage="plaintext"
               // defaultValue="// loop script"
-              defaultValue=""
+              defaultValue={loop}
             />
           </Paper>
         </Grid>
