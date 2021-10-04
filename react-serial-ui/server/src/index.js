@@ -46,6 +46,7 @@ const selectPort = (onData, portArg) => {
       const program = programFromReq({ body: data });
       const buffer = program.serializeBinary();
       console.log("buffer=" + buffer);
+      port.write(`START_UPDATE:${buffer.length}\n`);
       console.log("buffer-length=" + buffer.length);
       logs.push(
         "Writing " + buffer.length + " bytes to Arduino Serial port " + port.path
@@ -53,7 +54,8 @@ const selectPort = (onData, portArg) => {
       if (buffer.length > MAX_BUFFER_SIZE) {
         logs.push("Error on write: bytes length = " + buffer.length + " max length possible = " + MAX_BUFFER_SIZE);
       } else {
-        port.write([buffer.length]);
+        // port.write([buffer.length]);
+        console.log("buffer.length", buffer.length);
         port.write(buffer, function (err) {
           if (err) {
             logs.push('Error on write: ' + err.message);
